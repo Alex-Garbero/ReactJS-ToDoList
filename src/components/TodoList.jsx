@@ -2,7 +2,7 @@ import React from "react";
 import TodoCard from "./TodoCard";
 
 export default function TodoList(props) {
-    const {todos} = props
+    const { todos } = props
 
     return (
         <ul className="main">
@@ -11,7 +11,7 @@ export default function TodoList(props) {
             The arguments for the arrow function are 'todo' and 'todoIndex' */}
             {todos.map((todo, todoIndex) => {
                 return (
-                <TodoCard key={todoIndex}>
+                <TodoCard {...props} key={todoIndex} index={todoIndex}>
 					{/* With components, to render out the children contents within the component, you have to go into the component ('TodoCard') and receive the children via the properties ('props') of the component. See TodoCard.jsx for implementation. */}
 					<p>{todo}</p>
                 </TodoCard>

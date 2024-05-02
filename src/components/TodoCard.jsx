@@ -4,7 +4,7 @@ import React, { Children } from "react";
 export default function TodoCard(props) {
 	// Destructure 'children' out from 'props'
 	// Will give us access to all of the 'children' elements
-	const {children} = props
+	const { children, handleDeleteTodo, index } = props
     return (
         // Add list items by index
         <li className="todoItem">
@@ -12,8 +12,15 @@ export default function TodoCard(props) {
 			{children}
             <div className="actionsContainer">
                 {/* Add edit button from fontawesome to each item */}
-                <i className="fa-solid fa-pen-to-square"></i>
-                <i className="fa-solid fa-trash-can"></i>
+				<button>
+					<i className="fa-solid fa-pen-to-square"></i>
+				</button>
+				{/* Call handleDeleteTodo function on button click */}
+                <button onClick={() => {
+					handleDeleteTodo(index)
+				}}>
+					<i className="fa-solid fa-trash-can"></i>
+				</button>
             </div>
         </li>
     );

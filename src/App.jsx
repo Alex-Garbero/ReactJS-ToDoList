@@ -17,13 +17,27 @@ function App() {
 		setTodos(newTodoList)
 	}
 
+	function handleDeleteTodo(index) {
+		// Filtering method returns whether or not we want the particular element in the array
+		const newTodoList = todos.filter((todo, todoIndex) => {
+			return todoIndex !== index
+		})
+		// Call setTodos to modify the list
+		setTodos(newTodoList)
+	}
+
+	function handleEditTodo(index) {
+
+	}
+
     return (
         <>
 			{/* Pass function handleAddTodos as an attribute prop */}
 			<TodoInput handleAddTodos={handleAddTodos}/>
 			{/* Pass in attribute to component tag: todos={todos} */}
 			{/* This way, todo list is accessible by destructuring as a prop in components */}
-            <TodoList todos={todos}/>
+			{/* The buttons for deleting are in TodoList, so we pass the function as a prop */}
+            <TodoList handleDeleteTodo={handleDeleteTodo} todos={todos} />
         </>
     );
 }
