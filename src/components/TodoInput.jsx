@@ -1,10 +1,8 @@
 import { useState } from "react";
 // Tell functional component to expect 'props'
 export default function TodoInput(props) {
-	// Destructure out handleAddTodos function
-	const { handleAddTodos } = props
-
-	const [todoValue, setTodoValue] = useState('')
+	// Destructure out functions
+	const { handleAddTodos, todoValue, setTodoValue } = props
 
     return (
         <header>
@@ -19,5 +17,5 @@ export default function TodoInput(props) {
 				setTodoValue('')
 			}}>Add</button> 
         </header>
-    );
+    )
 }

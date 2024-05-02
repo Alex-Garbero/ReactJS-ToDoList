@@ -8,6 +8,8 @@ function App() {
 	// Stateful variable that we can interact with
 	const [todos, setTodos] = useState([
 	])
+	const [todoValue, setTodoValue] = useState('')
+
 
 	// Create function that is used to handle adding todos
 	function handleAddTodos(newTodo) {
@@ -27,17 +29,21 @@ function App() {
 	}
 
 	function handleEditTodo(index) {
-
+		const valueToBeEdited = todos[index]
+		// Set value in the input to the value to be edited
+		setTodoValue(valueToBeEdited)
+		// Delete current instance
+		handleDeleteTodo(index)
 	}
 
     return (
         <>
 			{/* Pass function handleAddTodos as an attribute prop */}
-			<TodoInput handleAddTodos={handleAddTodos}/>
+			<TodoInput todoValue={todoValue} setTodoValue={setTodoValue} handleAddTodos={handleAddTodos}/>
 			{/* Pass in attribute to component tag: todos={todos} */}
 			{/* This way, todo list is accessible by destructuring as a prop in components */}
 			{/* The buttons for deleting are in TodoList, so we pass the function as a prop */}
-            <TodoList handleDeleteTodo={handleDeleteTodo} todos={todos} />
+            <TodoList handleEditTodo={handleEditTodo} handleDeleteTodo={handleDeleteTodo} todos={todos} />
         </>
     );
 }
