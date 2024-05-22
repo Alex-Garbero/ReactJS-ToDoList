@@ -3,7 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: #202124;
+    color: #0f0e0e;
 }
 
 h1,
@@ -11,7 +11,7 @@ h2,
 h3,
 input,
 button {
-    font-family: "Press Start 2P", system-ui;
+    font-family: "Montserrat", system-ui;
 }
 
 #root {
@@ -19,7 +19,7 @@ button {
     display: flex;
     flex-direction: column;
     padding: 14px;
-    background: #eff6ff;
+    background: #797a9e;
     gap: 14px;
 }
 
@@ -103,6 +103,7 @@ p {
 }
 
 @media (min-width: 640px) {
+
     header button,
     header input {
         font-size: 1.2em;
