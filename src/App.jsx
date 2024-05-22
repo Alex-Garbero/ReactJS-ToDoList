@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";
 
@@ -8,6 +8,7 @@ function App() {
 	// Stateful variable that we can interact with
 	const [todos, setTodos] = useState([])
 	const [todoValue, setTodoValue] = useState('')
+	const [selectedIndex, setSelectedIndex] = useState(null); // State to manage selected item for arrow key selector function
 
 	function persistData(newList) {
 		localStorage.setItem('todos', JSON.stringify({ todos: newList }))
@@ -29,6 +30,7 @@ function App() {
 		persistData(newTodoList)
 		// Call setTodos to modify the list
 		setTodos(newTodoList)
+		setSelectedIndex(null); // Clear selection after deleting to-do with arrow key selector function
 	}
 
 	function handleEditTodo(index) {
@@ -38,6 +40,38 @@ function App() {
 		// Delete current instance
 		handleDeleteTodo(index)
 	}
+	// Logic to select to-do item with arrow keys and delete with 'Delete' key
+	function handleKeyDown(e) {
+		// Check if the pressed key is 'ArrowUp'
+		if (e.key === 'ArrowUp') {
+			if (selectedIndex === 0) {
+				// If the selected index is 0 (first to-do item), clear the selection
+				setSelectedIndex(null);
+				// Focus the input element with ID 'todo-input'
+				document.getElementById('todo-input').focus();
+			} else if (selectedIndex !== null) {
+				// If a to-do item is currently selected (selectedIndex is not null)
+				// Move the selection up to the previous item, if not already at the first item
+				setSelectedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
+			}
+		} 
+		// Check if the pressed key is 'ArrowDown'
+		else if (e.key === 'ArrowDown') {
+			if (selectedIndex === null) {
+				// If no item is currently selected (selectedIndex is null), select the first to-do item
+				setSelectedIndex(0);
+			} else {
+				// If a to-do item is currently selected (selectedIndex is not null)
+				// Move the selection down to the next item, if not already at the last item
+				setSelectedIndex((prevIndex) => (prevIndex < todos.length - 1 ? prevIndex + 1 : prevIndex));
+			}
+		} 
+		// Check if the pressed key is 'Backspace'
+		else if (e.key === 'Backspace' && selectedIndex !== null) {
+			// If a to-do item is currently selected (selectedIndex is not null), delete the selected to-do item
+			handleDeleteTodo(selectedIndex);
+		}
+	}	
 
 	// useEffect function to ensure To-Do list keeps info on reload
 	useEffect(() => {
@@ -57,6 +91,16 @@ function App() {
 	// Because dependency array is empty [], this will run whenever the page reloads/refreshes
 	}, [])
 
+	// New useEffect for arrow key selector function
+	useEffect(() => {
+		// Add event listener for keydown
+		window.addEventListener('keydown', handleKeyDown);
+		return () => {
+			// Clean up event listener
+			window.removeEventListener('keydown', handleKeyDown);
+		};
+	}, [selectedIndex, todos]);
+
     return (
         <>
 			{/* Pass function handleAddTodos as an attribute prop */}
@@ -64,7 +108,13 @@ function App() {
 			{/* Pass in attribute to component tag: todos={todos} */}
 			{/* This way, todo list is accessible by destructuring as a prop in components */}
 			{/* The buttons for deleting are in TodoList, so we pass the function as a prop */}
-            <TodoList handleEditTodo={handleEditTodo} handleDeleteTodo={handleDeleteTodo} todos={todos} />
+            <TodoList
+				handleEditTodo={handleEditTodo}
+				handleDeleteTodo={handleDeleteTodo}
+				todos={todos}
+				selectedIndex={selectedIndex}
+				setSelectedIndex={setSelectedIndex}
+			/>
         </>
     );
 }
